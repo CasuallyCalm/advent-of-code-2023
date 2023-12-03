@@ -1,7 +1,6 @@
-import "dart:io";
+import "../aoc.dart" as aoc;
 
 int calibrationValue = 0;
-final String fileUri = "./day1/input.txt";
 
 String numberConvert(String input) {
   final conversions = {
@@ -23,7 +22,8 @@ String numberConvert(String input) {
 
 void main() async {
   RegExp exp = RegExp(r'(\d{1})');
-  File(fileUri)
+  aoc
+      .getInputFileForDay(1)
       .readAsLines()
       .then((lines) => lines.forEach((line) {
             line = numberConvert(line);
