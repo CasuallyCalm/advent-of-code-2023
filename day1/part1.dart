@@ -3,8 +3,8 @@ import "../aoc.dart" as aoc;
 int calibrationValue = 0;
 void main() async {
   RegExp exp = RegExp(r'(\d{1})');
-  aoc
-      .getInputFileForDay(1)
+  var inputFile = await aoc.getInputFileForDay(3);
+  inputFile
       .readAsLines()
       .then((lines) => lines.forEach((line) {
             if (exp.hasMatch(line)) {

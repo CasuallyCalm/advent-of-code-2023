@@ -3,11 +3,12 @@ import "dart:io";
 
 String _baseUrl = "adventofcode.com";
 
-File getInputFileForDay(int day) {
+Future<File> getInputFileForDay(int day) async {
   var file = File("./day${day}/input.txt");
   if (!file.existsSync()) {
     file.createSync(recursive: true);
-    _requestInputForDay(day).then((input) => file.writeAsStringSync(input));
+    var body = await _requestInputForDay(day);
+    await file.writeAsString(body);
     print('Created input file for day ${day}');
   }
   return file;

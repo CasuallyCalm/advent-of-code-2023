@@ -26,7 +26,7 @@ List<int> boundingBox(RegExpMatch partNumber) {
 }
 
 void main() async {
-  var inputFile = aoc.getInputFileForDay(3);
+  var inputFile = await aoc.getInputFileForDay(3);
   List<int> symbolLocations = [];
   await inputFile.readAsLines().then((lines) => lineLength = lines[0].length +
       1); // the test input needed length +2 for some reason...

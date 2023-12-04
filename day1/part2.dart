@@ -22,8 +22,8 @@ String numberConvert(String input) {
 
 void main() async {
   RegExp exp = RegExp(r'(\d{1})');
-  aoc
-      .getInputFileForDay(1)
+  var inputFile = await aoc.getInputFileForDay(3);
+  inputFile
       .readAsLines()
       .then((lines) => lines.forEach((line) {
             line = numberConvert(line);
