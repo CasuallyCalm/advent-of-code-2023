@@ -1,4 +1,4 @@
-import "dart:io";
+import "../aoc.dart" as aoc;
 
 var digitExp = RegExp(r"(\d+)");
 
@@ -6,35 +6,38 @@ List<int> getIntList(String line) {
   return digitExp.allMatches(line).map((e) => int.parse(e.group(0)!)).toList();
 }
 
+Map<String, List<List<int>>> almanac = Map();
+
 void main() async {
   List<int> seeds = [];
-  List<List<int>> maps = [];
-  var location = -1;
-  var inputFile = File("./day5/testinput.txt");
-  await inputFile.readAsLines().then((input) => {
-        input.forEach((line) {
-          if (line.startsWith("seeds:")) {
-            seeds = getIntList(line);
-          } else if (digitExp.hasMatch(line)) {
-            maps.add(getIntList(line));
-          }
-        })
-      });
+  var location = 100000000000; //some big number to initilaize;
+  var inputFile = await aoc.getInputFileForDay(5);
+  await inputFile.readAsLines().then((input) {
+    var mapName = "";
+    input.forEach((line) {
+      if (line.startsWith("seeds:")) {
+        seeds = getIntList(line);
+      } else if (line.contains("map:")) {
+        mapName = line.replaceAll("map:", "").trim();
+        almanac[mapName] = [];
+      } else if (digitExp.hasMatch(line)) {
+        almanac[mapName]!.add(getIntList(line));
+      }
+    });
+  });
   seeds.forEach(
     (seed) {
-      maps.forEach((map) {
-        var [destination, source, length] = map;
-        if (source <= seed && seed <= source + length - 1) {
-          seed = seed + destination - source;
+      var source = seed;
+      almanac.forEach((name, maps) {
+        for (var map in maps) {
+          var [destinationStart, sourceStart, length] = map;
+          if (source >= sourceStart && source < sourceStart + length) {
+            source = source + (destinationStart - sourceStart);
+            break;
+          }
         }
-        if (destination <= seed && seed <= destination + length - 1) {
-          seed = seed + destination - source;
-        }
-        print(seed);
       });
-      // if (location == -1 | location > value) {
-      //   location = value;
-      // }
+      location = location > source ? source : location;
     },
   );
   print(location);
